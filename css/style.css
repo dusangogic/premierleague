@@ -1,0 +1,66 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    color: 	#3F185B;
+}
+@font-face{
+	src:url("mojFont.ttf");
+	font-family: "Moj Font";
+}
+body {
+    font-family: "Moj Font";
+}
+ul {
+    list-style-type: none;
+}
+a{
+    text-decoration: none;
+}
+.okvir{
+    width: 1024px;
+    margin: 0 auto;
+}
+#header{
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    top: 0px;
+    z-index: 2;
+    box-shadow: 3px 3px 5px #3f185b;
+    background-color: #fff;
+}
+#header .okvir{
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+}
+#menu ul{
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+}
+#menu ul li{
+    display: block;
+    margin-top: 23px;
+    padding: 3px 0px;
+}
+#menu ul li a{
+    font-size:18px;
+}
+.aktivan {
+    border-bottom: 3px solid #3f185b;
+}
+#baner{
+    margin-top: 80px;
+    width: 100%;
+    height: 500px;
+    background: url(../img/baner.jpg) no-repeat center center fixed; 
+    background-size: cover;
+    padding-top: 200px;
+}
+#baner h1{
+    font-size:60px;
+    text-align: center;
+    padding: 70px 0px;
+    background-color: rgba(255,255,255,0.6)
+}
