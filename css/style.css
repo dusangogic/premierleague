@@ -64,3 +64,100 @@ a{
     padding: 70px 0px;
     background-color: rgba(255,255,255,0.6)
 }
+#standings {
+    padding-top:20px;
+}
+#standings h2 {
+    text-align: center;
+    font-size:50px;
+}
+#standings ul{
+    margin-top:10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+}
+#standings ul li {
+    display: block;
+    font-size: 35px;
+}
+#standings #table{
+    width:900px;
+    margin:0 auto;
+    margin-top: 30px;
+    text-align:left;
+    font-size:25px;
+    border-collapse: collapse;
+}
+.rank{
+    width: 8%;
+}
+.slika{
+    width: 8%;
+}
+.ime{
+    width: 28%}
+.w{
+    width:8%
+}
+.l{
+    width:8%
+}
+.d{
+    width:8%
+}
+.gplus{
+    width:8%
+}
+.gminus{
+    width:8%
+}
+.gd{
+    width:8%
+}
+.p{
+    width:8%
+}
+#table th{
+    background-color: #999999;;
+}
+.sivRed{
+    background-color: #ccc;
+}
+#scorers_container{
+    display:none;
+}
+#standings #scorers{
+    width:900px;
+    margin:0 auto;
+    margin-top: 30px;
+    text-align:left;
+    font-size:19px;
+    border-collapse: collapse;
+}
+.s_rank{width:5%;}
+.s_ime{width:26%}
+.s_klub{width:26%}
+.s_played{width:17%}
+.s_golovi{width:17%}
+.s_asistencije{width:9%}
+#scorers th{
+    background-color: #999999;
+}
+#scorers_container p {
+    width:100px;
+    margin: 0 auto;
+    margin-top: 10px;
+    text-align: center;
+    color: #fff;
+    padding: 5px;
+    background-color:#999999;
+}
+#scorers_container p:hover{
+    cursor: pointer;
+    background-color: #3F185B;
+}
+#standings li:hover{
+    cursor: pointer;
+}
