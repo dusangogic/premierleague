@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Premier League</title>
         <meta name="author" content="Dusan Gogic"/>
-        <meta name="description" content=""/>
+        <meta name="description" content="A fanpage that has all the latest info about Premier League table, teams and players."/>
         <meta name="keywords" content="Premier, League, Teams, Players"/>
         <link rel="shortcut icon" href="img/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -15,7 +15,7 @@
         <div id="header">
 			<div class="okvir">
 				<div id="logo">
-					<a href="#">
+					<a href="index.html">
 						<img src="img/logo.png" alt="Logo"/>
 					</a>
 				</div>
@@ -24,8 +24,8 @@
 						<li><a href="#standings">Standings</a></li>
 						<li><a href="#results">Results</a></li>
 						<li><a href="#fixtures">Fixtures</a></li>
-						<li><a href="#">Top Performers</a></li>
-						<li><a href="#">Author</a></li>
+						<li><a href="#performers">Top Performers</a></li>
+						<li><a href="#author">Author</a></li>
 					</ul>
 				</div>
 			</div>
@@ -480,7 +480,7 @@
                     <td class="fixturesSlikaGost"><img src="img/watford.png" alt="watford"/></td>
                 </tr>
                 <tr>
-                    <td class="fixturesSlikaDomacin"><img src="img/Burnley.png" alt="burnley"/></td>
+                    <td class="fixturesSlikaDomacin"><img src="img/burnley.png" alt="burnley"/></td>
                     <td class="fixturesDomacin">Burnley</td>
                     <td class="fixturesDate">14.12</td>
                     <td class="fixturesGost">Newcastle</td>
@@ -544,8 +544,50 @@
                 </tr>
             </table>
         </div>
+
+        <div id="performers" class="okvir">
+            <h2>Top Performers</h2>
+        </div>
+
+        <div id="author" class="okvir">
+            <h2>Author</h2>
+            <div id="aboutAuthor">
+                <h3>Dusan Gogic</h3>
+                <div id ="slikaAuthor">
+                    <a href="https://dusangogic.github.io/portfolio/index.html" target="_blank">Check out my Portfolio</a>
+                </div>
+            </div>
+            <div id="formaAuthor">
+                <h3>Contact me</h3>
+                <form action="#" method="POST" name="form" id="form">
+                        <span id="fullNameSpan"></span>
+                        <input type="text" id="fullName" name="fullName" required="required" placeholder="Full name"/>
+                        <span id="emailSpan"></span>
+                        <input type="text" id="email" name="email" required="required" placeholder="Email"/>
+                        <span id="subjectSpan"></span>
+                        <input type="text" id="subject" name="subjet" required="required" placeholder="Subject"/>
+                        <span id="messageSpan"></span>
+                        <textarea name="message" id="message" required="required" placeholder="Message"></textarea>
+                        <span id="poslato"></span>
+                        <input type="button" name="button" id="button" value="Send">
+                </form>
+            </div>
+        </div>
+
+        <div id="futer">
+            <div class="okvir">
+                <ul>
+                    <li><a href="js/main.js" target="_blank">JavaScript</a></li>
+                    <li><a href="css/style.css" target="_blank">CSS</a></li>
+                    <li><a href="sitemap.xml" target="_blank">Sitemap</a></li>
+                </ul>
+                <p>&copy;Dusan Gogic 2019</p>
+                <a href="dokumentacija.pdf" target="_blank">Documentation</a>
+            </div>
+        </div>
        
         <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/scrolls.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
     </body>
 </html>

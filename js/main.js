@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+    scroller.init();
     var naslovi = ["All about the teams", "All about the players","All about the the league"];
     var brojac = 0;
     var naslov = $("#baner h1");
@@ -152,7 +152,7 @@ $(document).ready(function(){
         document.querySelector("#tabelaResults tr:nth-child(3) .resultsGost").innerHTML = "Chelsea"
         document.querySelector("#tabelaResults tr:nth-child(3) .resultsSlikaGost img").setAttribute("src","img/chelsea.png");
 
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaDomacin img").setAttribute("src","img/Brighton.png");
+        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaDomacin img").setAttribute("src","img/brighton.png");
         document.querySelector("#tabelaResults tr:nth-child(4) .resultsDomacin").innerHTML = "Brighton";
         document.querySelector("#tabelaResults tr:nth-child(4) .resultsRezultat").innerHTML = "0 - 2"
         document.querySelector("#tabelaResults tr:nth-child(4) .resultsGost").innerHTML = "Leicester"
@@ -334,5 +334,78 @@ $(document).ready(function(){
         document.querySelector("#tableFixtures tr:nth-child(10) .fixturesDate").innerHTML = "27.12"
         document.querySelector("#tableFixtures tr:nth-child(10) .fixturesGost").innerHTML = "Manchester City"
         document.querySelector("#tableFixtures tr:nth-child(10) .fixturesSlikaGost img").setAttribute("src","img/mancity.png");
+    });
+
+    var x = "topPerformers";
+    for(let i = 1; i<=2; i++){
+        document.getElementById("performers").innerHTML+="<div id='"+x+i+"'class='"+x+"'><p id='reveal"+i+"'></p></div>"
+    }
+    document.getElementById("reveal1").innerHTML = "Reveal player of the week";
+    document.getElementById("reveal2").innerHTML = "Reveal manager of the week";
+    for(let i = 0; i<=1; i++){
+        document.getElementsByClassName("topPerformers")[i].style.background = "url(img/pozadina"+i+".jpg";
+    }
+    $("#topPerformers1").click(function(){
+        if($("#reveal1").html()=="Reveal player of the week"){
+            $(this).fadeOut(function(){
+                $(this).css("background","url(img/sterling.jpg");
+                $("#reveal1").html("Raheem Sterling");
+                $(this).fadeIn();
+            });
+        }
+    });
+    $("#topPerformers2").click(function(){
+        if($("#reveal2").html()=="Reveal manager of the week"){
+            $(this).fadeOut(function(){
+                $(this).css("background","url(img/mourinho.jpg");
+                $("#reveal2").html("Jose Mourinho");
+                $(this).fadeIn();
+            });
+        }
+    });
+    
+    var spanFullName = document.getElementById("fullNameSpan");
+    var spanEmail = document.getElementById("emailSpan");
+    var spanSubject = document.getElementById("subjectSpan");
+    var spanMessage = document.getElementById("messageSpan");
+    var spanPoslato = document.getElementById("poslato");
+
+    regFullName = /^[A-Z][a-z]{1,11}(\s[A-Z][a-z]{1,11})+$/
+    regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    document.getElementById("button").addEventListener("click",function(){
+        var fullName = document.getElementById("fullName").value;
+        var email = document.getElementById("email").value;
+        var subject = document.getElementById("subject").value;
+        var message = document.getElementById("message").value;
+        
+        spanFullName.innerHTML = "";
+        spanEmail.innerHTML = "";
+        spanSubject.innerHTML = "";
+        spanMessage.innerHTML = "";
+
+        var validno = true;
+        spanPoslato.innerHTML="";
+
+        if(fullName=="") { spanFullName.innerHTML = "Required"; validno = false;}
+        else if(regFullName.test(fullName)==false){spanFullName.innerHTML = "Enter your full name correctly"; validno = false;}
+
+        if(email=="") { spanEmail.innerHTML = "Required"; validno = false;}
+        else if(regEmail.test(email)==false){spanEmail.innerHTML = "Enter your email correctly"; validno = false;}
+
+        if(subject=="") { spanSubject.innerHTML = "Required"; validno = false;}
+        else if(subject.length<4){spanSubject.innerHTML = "At least 4 characters"; validno = false;}
+
+        if(message=="") { spanMessage.innerHTML = "Required"; validno = false;}
+        else if(message.length<10){spanMessage.innerHTML = "At least 10 characters"; validno = false;}
+
+        if(validno){
+            spanPoslato.innerHTML="Your message has been sent.";
+            document.getElementById("fullName").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("subject").value = "";
+            document.getElementById("message").value = "";
+        }
+
     });
 });

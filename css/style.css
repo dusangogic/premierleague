@@ -2,6 +2,7 @@
     margin: 0px;
     padding: 0px;
     color: 	#3F185B;
+    box-sizing: border-box;
 }
 @font-face{
 	src:url("mojFont.ttf");
@@ -63,9 +64,6 @@ a{
     text-align: center;
     padding: 70px 0px;
     background-color: rgba(255,255,255,0.6)
-}
-#standings{
-    padding-top:20px;
 }
 #standings h2{
     text-align: center;
@@ -162,10 +160,10 @@ a{
     cursor: pointer;
 }
 
-#results, #fixtures{
+#results, #fixtures, #performers, #author, #standings{
     padding-top:40px;
 }
-#results h2, #fixtures h2{
+#results h2, #fixtures h2, #performers h2, #author h2 {
     text-align: center;
     font-size:50px;
 }
@@ -188,8 +186,138 @@ a{
     margin-top: 30px;
     font-size:20px;
 }
-.resultsSlikaDomacin{width:10%};
-.resultsDomacin{width:35%};
-.resultsRezultat{width:10%};
-.resultsGost{width:35%};
-.resultsSlikaGost{width:10%};
+.resultsSlikaDomacin{width:10%;}
+.resultsDomacin{width:35%;}
+.resultsRezultat{width:10%;}
+.resultsGost{width:35%;}
+.resultsSlikaGost{width:10%;}
+
+.fixturesSlikaDomacin{width:10%;}
+.fixturesDomacin{width:33%;}
+.fixturesDate{width:14%;}
+.fixturesGost{width:33%;}
+.fixturesSlikaGost{width:10%;}
+
+#performers{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+#performers h2 {
+    width: 100%;
+    margin-bottom: 40px;
+}
+.topPerformers {
+    width: 300px;
+    height: 400px;
+    background-size: cover;
+    border-radius: 10px;
+    border: 5px solid #3F185B;
+    overflow: hidden;
+}
+.topPerformers p{
+    font-size:20px;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.6);
+    margin-top:300px;
+}
+.topPerformers:hover{
+    cursor: pointer;
+}
+#table, #scorers, #tabelaResults, #tableFixtures{
+    border: 3px solid #999999;
+}
+#author{
+    display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+#author h2{
+    width: 100%;
+    margin-bottom: 30px;
+}
+#author h3{
+    font-size: 25px;
+    text-align: center;
+}
+#aboutAuthor h3, #formaAuthor h3{
+    margin-bottom: 20px;
+}
+#slikaAuthor{
+    width:300px;
+    height: 400px;
+    background: url(../img/autor.jpg);
+    background-size: cover;
+    border-radius: 10px;
+    border: 5px solid #3F185B;
+}
+#slikaAuthor a{
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.6);
+    margin-top: 320px;
+}
+#formaAuthor #form{
+    width: 400px;
+}
+#formaAuthor #form input, #formaAuthor #form textarea {
+    display: block;
+    width: 400px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 3px solid #999999;
+}
+#formaAuthor #form input{
+    height: 30px;
+    padding-left: 5px;
+}
+#formaAuthor #form input:focus {
+    border: 3px solid #3F185B;
+}
+#formaAuthor #form textarea {
+    height: 100px;
+    padding-top: 5px;
+    padding-left: 5px;
+  }
+#formaAuthor #form textarea:focus {
+    border: 3px solid #3F185B;
+}
+#formaAuthor #form input:last-child {
+    height: 30px;
+    margin: 0 auto;
+  }
+#formaAuthor #form input:last-child:hover {
+    letter-spacing: 2px;
+    background-color: #3F185B;
+    color: #ffffff;
+    cursor: pointer;
+  }
+#poslato {
+    display:block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#futer{
+    width: 100%;
+    height: 80px;
+    margin-top: 30px;
+    background-color: #3F185B;
+}
+#futer .okvir{
+    height: inherit;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+#futer ul li a, #futer p, #futer a{
+    color: white;
+}
+#futer ul li{
+    display: inline;
+    margin-right: 5px;
+}
