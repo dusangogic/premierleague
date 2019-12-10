@@ -219,10 +219,28 @@
     #futer{
         font-size: 12px;
     }
+    #author, #performers{
+        padding: 0px;
+    }
 }
 @media (max-width:430px){
     #futer{
         font-size: 10px;
+    }
+    #standings #scorers {
+        font-size: 10px;
+    }
+}
+@media (max-width: 400px){
+    #table_container #table, #tabelaResults, #tableFixtures{
+        font-size: 11px;
+    }
+    #table_container #table img, #tabelaResults img, #tableFixtures img{
+        height: 26px;
+        width: 26px;
+    }
+    #formaAuthor{
+        width: 280px;
     }
 }
 
