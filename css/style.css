@@ -33,6 +33,7 @@ a{
 #header .okvir{
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     height: 80px;
 }
 #menu ul{
@@ -320,4 +321,12 @@ a{
 #futer ul li{
     display: inline;
     margin-right: 5px;
+}
+#menuBars{
+    margin-top:15px;
+    font-size:30px;
+    display: none;
+}
+#menuBars:hover{
+    cursor: pointer;
 }

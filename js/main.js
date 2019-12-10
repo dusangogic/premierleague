@@ -1,5 +1,7 @@
 $(document).ready(function(){
+    
     scroller.init();
+
     var naslovi = ["All about the teams", "All about the players","All about the the league"];
     var brojac = 0;
     var naslov = $("#baner h1");
@@ -407,5 +409,11 @@ $(document).ready(function(){
             document.getElementById("message").value = "";
         }
 
+    });
+    $("#menuBars").click(function(){
+        $("#menu").toggle();
+    });
+    $("#menu ul li a").click(function(){
+        $("#menu").toggle();
     });
 });

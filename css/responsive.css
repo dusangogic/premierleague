@@ -1,0 +1,228 @@
+@media (max-width:1100px){
+    .okvir{
+        width:100%;
+    }
+    #header .okvir, #futer{
+        padding: 0px 20px;
+    }
+}
+
+@media (max-width:1000px){
+    #table_container, #scorers_container, #tabelaResults, #tableFixtures{
+        width: 90%;
+    }
+    #table_container, #scorers_container{
+        margin: 0 auto;
+    }
+    #standings #table, #standings #scorers{
+        width: 100%;
+    }
+}
+
+@media (max-width:900px){
+    #standings #scorers {
+        font-size: 15px;
+    }
+    #scorers_container p{
+        font-size: 12px;
+        padding: 4px;
+        width: 80px;
+    }
+}
+
+@media (max-width:850px){
+    #header{
+        height: 70px;
+    }
+    #menu ul li a{
+        font-size:15px;
+    }
+    #header #logo img {
+        width: 140px;
+        height: 60px;
+    }
+    #baner{
+        margin-top: 70px;
+        height: 400px;
+        padding-top: 130px;
+    }
+    #baner h1{
+        font-size: 50px;
+        padding: 55px 0px;
+    }
+    #standings h2, #results h2, #fixtures h2, #performers h2, #author h2{
+        font-size: 40px;
+    }
+    #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
+        font-size: 23px;
+    }
+    #table_container #table, #tabelaResults, #tableFixtures{
+        font-size: 17px;
+    }
+    #table_container #table img, #tabelaResults img, #tableFixtures img{
+        height: 36px;
+        width: 36px;
+    }
+    .topPerformers, #slikaAuthor {
+        width: 270px;
+        height: 360px;
+    }
+    .topPerformers p, #slikaAuthor a {
+        font-size: 17px;
+        margin-top: 270px;
+    }
+    #formaAuthor{
+        width: 350px;
+    }
+    #formaAuthor #form, #formaAuthor #form input, #formaAuthor #form textarea {
+        width: 100%;
+    }
+
+}
+
+@media (max-width:750px){
+    #menu ul{
+        width: 400px;
+    }
+}
+
+@media (max-width:700px){
+    #baner h1{
+        font-size: 45px;
+        padding: 50px 0px;
+    }
+    #standings h2, #results h2, #fixtures h2, #performers h2, #author h2{
+        font-size: 35px;
+    }
+    #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
+        font-size: 20px;
+    }
+    #table_container #table, #tabelaResults, #tableFixtures{
+        font-size: 14px;
+    }
+    #standings #scorers {
+        font-size: 13px;
+    }
+    #table_container #table img, #tabelaResults img, #tableFixtures img{
+        height: 32px;
+        width: 32px;
+    }
+    .topPerformers, #slikaAuthor {
+        width: 228px;
+        height: 292px;
+    }
+    .topPerformers p, #slikaAuthor a {
+        font-size: 14px;
+        margin-top: 220px;
+    }
+    #formaAuthor{
+        width: 300px;
+    }
+    #futer {
+        font-size: 14px;
+    }
+}
+@media (max-width:615px){
+    #header{
+        height: 60px;
+    }
+    #header #logo img {
+        width: 112px;
+        height: 48px;
+        margin-top: 5px;
+    }
+    #baner{
+        margin-top: 60px;
+        height: 380px;
+        padding-top: 140px;
+    }
+    #baner h1{
+        font-size: 40px;
+        padding: 45px 0px;
+    }
+    #standings h2, #results h2, #fixtures h2, #performers h2, #author h2{
+        font-size: 30px;
+    }
+    #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
+        font-size: 17px;
+    }
+    #table_container #table, #tabelaResults, #tableFixtures{
+        font-size: 12px;
+    }
+    #standings #scorers {
+        font-size: 11px;
+    }
+    #table_container #table img, #tabelaResults img, #tableFixtures img{
+        height: 28px;
+        width: 28px;
+    }
+    #standings ul, #results ul, #fixtures ul{
+        height: 25px;
+    }
+    .topPerformers, #slikaAuthor {
+        width: 264px;
+        height: 335px;
+        margin-bottom: 30px;
+    }
+    .topPerformers p, #slikaAuthor a {
+        font-size: 15px;
+        margin-top: 225px;
+    }
+    #formaAuthor{
+        width: 352px;
+    }
+    #futer {
+        font-size: 13px;
+    }
+    #performers, #author{
+        padding: 0px 60px;
+        margin-top: 30px;
+    }
+    #table_container, #scorers_container, #tabelaResults, #tableFixtures{
+        width: 95%;
+    }
+    #menu{
+        display:none;
+    }
+    #header .okvir{
+        padding:0px;
+    }
+    #menuBars{
+        display: block;
+        margin-right: 20px;
+    }
+    #logo{
+        margin-left: 20px;
+    }
+    #menu{
+        width:100%;
+        box-shadow: 3px 3px 5px #3f185b;
+    }
+    #menu ul{
+        width:100%;
+        flex-direction: column;
+        background-color: white;
+    }
+    #menu ul li{
+        text-align: center;
+        margin-top:5px;
+        margin-bottom: 10px;
+    }
+    #menu ul li a{
+        font-size: 18px;
+    }
+}
+@media (max-width:500px){
+    #standings #scorers {
+        font-size: 12px;
+    }
+    #futer{
+        font-size: 12px;
+    }
+}
+@media (max-width:430px){
+    #futer{
+        font-size: 10px;
+    }
+}
+
