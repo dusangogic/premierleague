@@ -8,7 +8,7 @@
 }
 
 @media (max-width:1000px){
-    #table_container, #scorers_container, #tabelaResults, #tableFixtures{
+    #table_container, #scorers_container, #resultsTable, #fixturesTable{
         width: 90%;
     }
     #table_container, #scorers_container{
@@ -56,10 +56,10 @@
     #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
         font-size: 23px;
     }
-    #table_container #table, #tabelaResults, #tableFixtures{
+    #table_container #table, #resultsTable, #fixturesTable{
         font-size: 17px;
     }
-    #table_container #table img, #tabelaResults img, #tableFixtures img{
+    #table_container #table img, #resultsTable img, #fixturesTable img{
         height: 36px;
         width: 36px;
     }
@@ -97,13 +97,13 @@
     #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
         font-size: 20px;
     }
-    #table_container #table, #tabelaResults, #tableFixtures{
+    #table_container #table, #resultsTable, #fixturesTable{
         font-size: 14px;
     }
     #standings #scorers {
         font-size: 13px;
     }
-    #table_container #table img, #tabelaResults img, #tableFixtures img{
+    #table_container #table img, #resultsTable img, #fixturesTable img{
         height: 32px;
         width: 32px;
     }
@@ -146,13 +146,13 @@
     #standings ul li, #results ul li, #fixtures ul li, #author #aboutAuthor h3, #author #formaAuthor h3 {
         font-size: 17px;
     }
-    #table_container #table, #tabelaResults, #tableFixtures{
+    #table_container #table, #resultsTable, #fixturesTable{
         font-size: 12px;
     }
     #standings #scorers {
         font-size: 11px;
     }
-    #table_container #table img, #tabelaResults img, #tableFixtures img{
+    #table_container #table img, #resultsTable img, #fixturesTable img{
         height: 28px;
         width: 28px;
     }
@@ -178,7 +178,7 @@
         padding: 0px 60px;
         margin-top: 30px;
     }
-    #table_container, #scorers_container, #tabelaResults, #tableFixtures{
+    #table_container, #scorers_container, #resultsTable, #fixturesTable{
         width: 95%;
     }
     #menu{
@@ -232,10 +232,10 @@
     }
 }
 @media (max-width: 400px){
-    #table_container #table, #tabelaResults, #tableFixtures{
+    #table_container #table, #resultsTable, #fixturesTable{
         font-size: 11px;
     }
-    #table_container #table img, #tabelaResults img, #tableFixtures img{
+    #table_container #table img, #resultsTable img, #fixturesTable img{
         height: 26px;
         width: 26px;
     }

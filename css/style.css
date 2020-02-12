@@ -179,7 +179,7 @@ a{
     display: block;
     font-size: 25px;
 }
-#tabelaResults, #tableFixtures{
+#fixturesTable, #resultsTable{
     width: 900px;
     margin: 0 auto;
     border-collapse: collapse;
@@ -189,13 +189,13 @@ a{
 }
 .resultsSlikaDomacin{width:10%;}
 .resultsDomacin{width:35%;}
-.resultsRezultat{width:10%;}
+.resultsText{width:10%;}
 .resultsGost{width:35%;}
 .resultsSlikaGost{width:10%;}
 
 .fixturesSlikaDomacin{width:10%;}
 .fixturesDomacin{width:33%;}
-.fixturesDate{width:14%;}
+.fixturesText{width:14%;}
 .fixturesGost{width:33%;}
 .fixturesSlikaGost{width:10%;}
 
@@ -226,7 +226,7 @@ a{
 .topPerformers:hover{
     cursor: pointer;
 }
-#table, #scorers, #tabelaResults, #tableFixtures{
+#table, #scorers, #resultsTable, #fixturesTable{
     border: 3px solid #999999;
 }
 #author{

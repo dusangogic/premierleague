@@ -2,18 +2,9 @@ $(document).ready(function(){
     
     scroller.init();
 
-    var naslovi = ["All about the teams", "All about the players","All about the the league"];
-    var brojac = 0;
-    var naslov = $("#baner h1");
-    setInterval(promena, 3000);
-    function promena() {
-        naslov.fadeOut(function(){
-            naslov.html(naslovi[brojac]);
-            brojac++;
-            if(brojac == naslovi.length) { brojac = 0; }
-            naslov.fadeIn();
-        });
-    }
+    setInterval(promenaNaslova, 3000);
+
+    kreiranjeMenija();
 
     $("#standings ul li").click(function(){
         $("#standings ul li").removeClass("aktivan");
@@ -28,325 +19,413 @@ $(document).ready(function(){
     document.getElementById("scorersDugme").addEventListener("click",function(){
         document.getElementById("table_container").style.display="none";
         document.getElementById("scorers_container").style.display="block";
-
     });
+
+    kreiranjeTabeleTimova();
+
+    kreiranjeInicijalneListeStrelaca();
 
     var showmore = document.getElementById("showmore");
-    var pocetno = document.getElementById("scorers").innerHTML;
     showmore.addEventListener("click",function(){
-        if(showmore.innerHTML=="Show more"){
-            document.getElementById("scorers").innerHTML+="<tr class='s_tablerow'><td>11</td><td>Mohamed Salah</td><td>Liverpool</td><td>15</td><td>6</td><td>3</td></tr><tr class='s_tablerow'><td>12</td><td>Arnold Barnes</td><td>Aston Villa</td><td>14</td><td>6</td><td>0</td></tr><tr class='s_tablerow'><td>13</td><td>Harry Wilson</td><td>Bournemouth</td><td>14</td><td>6</td><td>0</td></tr><tr class='s_tablerow'><td>14</td><td>Chandler Wood</td><td>Burnley</td><td>12</td><td>6</td><td>1</td></tr><tr class='s_tablerow'><td>15</td><td>Bernardo Silva</td><td>Manchester City</td><td>13</td><td>5</td><td>4</td></tr><tr class='s_tablerow'><td>16</td><td>Jamie Maddison</td><td>Leicester</td><td>12</td><td>5</td><td>2</td></tr><tr class='s_tablerow'><td>17</td><td>Christian Pulisic</td><td>Chelsea</td><td>15</td><td>5</td><td>2</td></tr><tr class='s_tablerow'><td>18</td><td>Richarlison</td><td>Everton</td><td>11</td><td>5</td><td>1</td></tr><tr class='s_tablerow'><td>19</td><td>Dele Alli</td><td>Tottenham</td><td>13</td><td>5</td><td>1</td></tr><tr class='s_tablerow'><td>20</td><td>Gabriel Jesusi</td><td>Manchester City</td><td>12</td><td>5</td><td>0</td></tr>"
-            var scorers = $("#scorers .s_tablerow:odd");
-            scorers.addClass("sivRed");
-            showmore.innerHTML = "Show less"
+        if(showmore.innerHTML == "Show more") { 
+            kreiranjeDodatneListeStrelaca(); 
+            showmore.innerHTML = "Show less"; 
         }
-        else if(showmore.innerHTML=="Show less"){
-            document.getElementById("scorers").innerHTML = pocetno;
-            var scorers = $("#scorers .s_tablerow:odd");
-            scorers.addClass("sivRed");
-            showmore.innerHTML = "Show more";
+        else if(showmore.innerHTML == "Show less") { 
+            kreiranjeInicijalneListeStrelaca(); 
+            showmore.innerHTML = "Show more"; 
         }
-
     });
     
-    var timovi = $("#table .tablerow:odd");
-    timovi.addClass("sivRed");
+    kreiranjeResultsWeeks();
 
-    var scorers = $("#scorers .s_tablerow:odd");
-    scorers.addClass("sivRed");
+    resultsWeek15();
+     
+    kreiranjeFixturesWeeks();
 
-    var weekId=[15,14,13];
-    for (let i = 0; i<weekId.length; i++){
-        if(i==0) document.getElementById("resultsWeeks").innerHTML+= "<li id='week"+weekId[i]+"' class='aktivan'>Week "+weekId[i]+"</li>";
-        else document.getElementById("resultsWeeks").innerHTML+= "<li id='week"+weekId[i]+"'>Week "+weekId[i]+"</li>";
+    fixturesWeek17();
+
+    kreiranjeTopPerformers();
+
+    document.getElementById("button").addEventListener("click",function(){
+        validacijaForme();
+    });
+
+});
+
+//Kreiranje menija
+var linkovi = ["standings","results","fixtures","performers","author"];
+var text = ["Standings", "Results", "Fixtures", "Top Performers", "Author"]
+
+function kreiranjeMenija(){
+    var menu = document.getElementById("menu");
+    var ul = document.createElement("ul");
+    for(let i = 0; i<linkovi.length; i++){
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.innerHTML = text[i];
+        a.setAttribute("href","#"+linkovi[i]);
+        li.appendChild(a);
+        ul.appendChild(li);
+    }
+    menu.appendChild(ul);
+
+    $("#menuBars").click(function(){
+        $("#menu").toggle();
+    });
+    
+    $("#menu ul li a").click(function(){
+        if($(window).width()<=615) $("#menu").toggle();
+    });
+}
+
+//Smenjivanje teksta naslova
+var naslovi = ["All about the teams", "All about the players","All about the the league"];
+var brojac = 0;
+var naslov = $("#baner h1");
+function promenaNaslova() {
+    naslov.fadeOut(function(){
+        naslov.html(naslovi[brojac]);
+        brojac++;
+        if(brojac == naslovi.length) { brojac = 0; }
+        naslov.fadeIn();
+    });
+}
+
+//Zebra
+function zebra(redovi){
+    $(redovi).addClass("sivRed");
+}
+
+//Kreiranje tabele sa timovima
+var slike = ["liverpul","leicester","mancity","chelsea","wolves","manunited","palace","tottenham","sheffield","arsenal","newcastle","burnley","brighton","bournemouth","westham","astonvilla","southampton","everton","norwich","watford"]
+var naziv = ["Liverpool","Leicester","Manchester City","Chelsea","Wolves","Manchester United","Crystal Palace","Tottenham","Sheffield United","Arsenal","Newcastle","Burnley","Brighton","Bournemouth","West Ham","Aston Villa","Southamtpton","Everton","Norwich","Watford",]
+var table2d = [
+                [14,11,10,9,5,5,6,5,4,4,5,5,5,4,4,4,4,4,3,1],
+                [0,2,3,4,2,4,6,5,4,4,6,7,7,7,7,8,8,9,10,9],
+                [1,2,2,2,8,6,3,5,7,7,4,3,3,4,4,3,3,2,2,5],
+                [37,35,43,30,21,23,14,25,17,21,15,21,18,18,17,22,17,16,16,9],
+                [14,9,17,21,17,18,18,23,15,23,22,24,22,21,25,24,33,27,32,30],
+                [23,26,26,9,4,5,-4,2,2,-2,-7,-3,-4,-3,-8,-2,-16,-11,-16,-21],
+                [43,35,32,29,23,21,21,21,20,19,19,19,18,18,16,16,15,15,14,11,8],
+];
+
+function kreiranjeTabeleTimova(){
+    var tabela = document.getElementById("table");
+    
+    for(let i = 0; i<20; i++){
+        var red = document.createElement("tr");
+        red.setAttribute("class","tablerow");
+        
+        var rank = document.createElement("td");
+        rank.innerHTML = i+1;
+        red.appendChild(rank);
+        
+        var slikaTd = document.createElement("td");
+        var slika = document.createElement("img");
+        slika.setAttribute("src","img/"+slike[i]+".png");
+        slika.setAttribute("alt",slike[i]);
+        slikaTd.appendChild(slika);
+        red.appendChild(slikaTd);
+
+        var ime = document.createElement("td");
+        ime.innerHTML = naziv[i];
+        red.appendChild(ime);
+
+        for(let j=0; j<=6; j++){
+            var td = document.createElement("td");
+            td.innerHTML = table2d[j] [i];
+            red.appendChild(td);
+        }
+        
+        tabela.appendChild(red);
+
+    }
+    zebra("#table .tablerow:odd");
+}
+
+//Kreiranje liste streleca
+var nameTop10 = ["Jamie Vardy","Tammy Abraham","Aubameyang","Sadio Mane","Serio Aguero","Teemu Pukki","Danny Ings","Raheem Sterling","Harry Kane","Raul Jimenez"];
+var clubTop10 = ["Leicester","Chelsea","Arsenal","Liverpool","Manchester City","Norwich","Southampton","Manchester City","Tottenham","Wolves"];
+var top10_2d = [
+                [14,15,13,13,14,15,15,14,12,14],
+                [14,11,10,9,9,8,8,8,7,6],
+                [3,3,0,4,2,3,1,1,1,3]
+];
+
+var nameTop20 = ["Jamie Vardy","Tammy Abraham","Aubameyang","Sadio Mane","Serio Aguero","Teemu Pukki","Danny Ings","Raheem Sterling","Harry Kane","Raul Jimenez","Mohamed Salah","Arnold Barnes","Harry Wilson","Chandler Wood","Bernardo Silva","Jamie Maddison","Christian Pulisic","Richarlison","Dele Alli","Gabriel Jesus"];
+var clubTop20 = ["Leicester","Chelsea","Arsenal","Liverpool","Manchester City","Norwich","Southampton","Manchester City","Tottenham","Wolves","Liverpool","Aston Villa","Bournemouth","Burnley","Manchester City","Leicester","Chelsea","Everton","Tottenham","Manchester City"];
+var top20_2d = [
+                [14,15,13,13,14,15,15,14,12,14,15,14,14,12,13,12,15,11,13,12],
+                [14,11,10,9,9,8,8,8,7,6,6,6,6,6,5,5,5,5,5,5],
+                [3,3,0,4,2,3,1,1,1,3,3,0,0,1,4,2,2,1,1,0]
+];
+
+var lista = document.querySelector("#scorers tbody");
+
+function kreiranjeInicijalneListeStrelaca(){
+    lista.innerHTML = "";
+    kreiranjeListeStrelaca(nameTop10,clubTop10,top10_2d);
+}
+
+function kreiranjeDodatneListeStrelaca(){
+    lista.innerHTML = "";
+    kreiranjeListeStrelaca(nameTop20,clubTop20,top20_2d);
+}
+
+function kreiranjeListeStrelaca(nizName,nizClub, niz2d){  
+    for(let i = 0 ; i < nizName.length; i++){
+        var red = document.createElement("tr");
+        red.setAttribute("class","s_tablerow");
+
+        var rank = document.createElement("td");
+        rank.innerHTML = i+1;
+        red.appendChild(rank);
+
+        var name = document.createElement("td");
+        name.innerHTML = nizName[i];
+        red.appendChild(name);
+
+        var club = document.createElement("td");
+        club.innerHTML = nizClub[i];
+        red.appendChild(club);
+
+        for(let j=0; j<=2; j++){
+            var td = document.createElement("td");
+            td.innerHTML = niz2d[j] [i];
+            red.appendChild(td);
+        }
+
+        lista.appendChild(red);
+        
+    }
+    zebra("#scorers .s_tablerow:odd");
+}
+
+//Kreiranje lista nedelja
+resultsWeeks = [15,14,13];
+fixturesWeeks = [17,18,19];
+
+function kreiranjeResultsWeeks(){
+    kreiranjeListeNedelja("resultsWeeks",resultsWeeks);
+
+    document.getElementById("resultsWeeks15").addEventListener("click",function(){resultsWeek15();});
+    document.getElementById("resultsWeeks14").addEventListener("click",function(){resultsWeek14();});
+    document.getElementById("resultsWeeks13").addEventListener("click",function(){resultsWeek13();});
+}
+
+function kreiranjeFixturesWeeks(){
+    kreiranjeListeNedelja("fixturesWeeks",fixturesWeeks);
+
+    document.getElementById("fixturesWeeks17").addEventListener("click",function(){fixturesWeek17();});
+    document.getElementById("fixturesWeeks18").addEventListener("click",function(){fixturesWeek18();});
+    document.getElementById("fixturesWeeks19").addEventListener("click",function(){fixturesWeek19();});
+}
+
+function kreiranjeListeNedelja(ulID,nizNedelja){
+    for(let i=0; i<nizNedelja.length; i++){
+        var li = document.createElement("li");
+        li.setAttribute("id", ulID + nizNedelja[i]);
+        if(i==0) li.setAttribute("class","aktivan");
+        li.innerHTML = "Week " + nizNedelja[i];
+        document.getElementById(ulID).appendChild(li);
     }
 
-    var results = $("#tabelaResults tr:even");
-    results.addClass("sivRed");
-    
     $("#results ul li").click(function(){
         $("#results ul li").removeClass("aktivan");
         $(this).addClass("aktivan");
     });
-
-    var resultspocetno = document.getElementById("tabelaResults").innerHTML;
-    document.getElementById("week15").addEventListener("click",function(){
-        document.getElementById("tabelaResults").innerHTML = resultspocetno;
-    });
-    document.getElementById("week14").addEventListener("click",function(){
-        document.querySelector("#tabelaResults tr:first-child .resultsSlikaDomacin img").setAttribute("src","img/manunited.png");
-        document.querySelector("#tabelaResults tr:first-child .resultsDomacin").innerHTML = "Manchester United";
-        document.querySelector("#tabelaResults tr:first-child .resultsRezultat").innerHTML = "2 - 2"
-        document.querySelector("#tabelaResults tr:first-child .resultsGost").innerHTML = "Aston Villa"
-        document.querySelector("#tabelaResults tr:first-child .resultsSlikaGost img").setAttribute("src","img/astonvilla.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsSlikaDomacin img").setAttribute("src","img/leicester.png");
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsDomacin").innerHTML = "Leicester";
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsRezultat").innerHTML = "2 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsGost").innerHTML = "Everton"
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsSlikaGost img").setAttribute("src","img/everton.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsSlikaDomacin img").setAttribute("src","img/norwich.png");
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsDomacin").innerHTML = "Norwich";
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsRezultat").innerHTML = "2 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsGost").innerHTML = "Arsenal"
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsSlikaGost img").setAttribute("src","img/arsenal.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaDomacin img").setAttribute("src","img/wolves.png");
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsDomacin").innerHTML = "Wolves";
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsRezultat").innerHTML = "1 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsGost").innerHTML = "Sheffield United"
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaGost img").setAttribute("src","img/sheffield.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsSlikaDomacin img").setAttribute("src","img/southampton.png");
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsDomacin").innerHTML = "Southampton";
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsRezultat").innerHTML = "2 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsGost").innerHTML = "Watford"
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsSlikaGost img").setAttribute("src","img/watford.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsSlikaDomacin img").setAttribute("src","img/tottenham.png");
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsDomacin").innerHTML = "Tottenham";
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsRezultat").innerHTML = "3 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsGost").innerHTML = "Bournemouth"
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsSlikaGost img").setAttribute("src","img/bournemouth.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsSlikaDomacin img").setAttribute("src","img/liverpul.png");
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsDomacin").innerHTML = "Liverpool";
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsRezultat").innerHTML = "2 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsGost").innerHTML = "Brighton"
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsSlikaGost img").setAttribute("src","img/brighton.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsSlikaDomacin img").setAttribute("src","img/chelsea.png");
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsDomacin").innerHTML = "Chelsea";
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsRezultat").innerHTML = "0 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsGost").innerHTML = "West Ham"
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsSlikaGost img").setAttribute("src","img/westham.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsSlikaDomacin img").setAttribute("src","img/burnley.png");
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsDomacin").innerHTML = "Burnley";
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsRezultat").innerHTML = "0 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsGost").innerHTML = "Crystal Palace"
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsSlikaGost img").setAttribute("src","img/palace.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsSlikaDomacin img").setAttribute("src","img/newcastle.png");
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsDomacin").innerHTML = "Newcastle";
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsRezultat").innerHTML = "2 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsGost").innerHTML = "Manchester City"
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsSlikaGost img").setAttribute("src","img/mancity.png");
-    });
-
-    document.getElementById("week13").addEventListener("click",function(){
-        document.querySelector("#tabelaResults tr:first-child .resultsSlikaDomacin img").setAttribute("src","img/astonvilla.png");
-        document.querySelector("#tabelaResults tr:first-child .resultsDomacin").innerHTML = "Aston Villa";
-        document.querySelector("#tabelaResults tr:first-child .resultsRezultat").innerHTML = "2 - 0"
-        document.querySelector("#tabelaResults tr:first-child .resultsGost").innerHTML = "Newcastle"
-        document.querySelector("#tabelaResults tr:first-child .resultsSlikaGost img").setAttribute("src","img/newcastle.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsSlikaDomacin img").setAttribute("src","img/manunited.png");
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsDomacin").innerHTML = "Manchester United";
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsRezultat").innerHTML = "3 - 3"
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsGost").innerHTML = "Sheffield United"
-        document.querySelector("#tabelaResults tr:nth-child(2) .resultsSlikaGost img").setAttribute("src","img/sheffield.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsSlikaDomacin img").setAttribute("src","img/mancity.png");
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsDomacin").innerHTML = "Manchester City";
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsRezultat").innerHTML = "2 - 1"
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsGost").innerHTML = "Chelsea"
-        document.querySelector("#tabelaResults tr:nth-child(3) .resultsSlikaGost img").setAttribute("src","img/chelsea.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaDomacin img").setAttribute("src","img/brighton.png");
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsDomacin").innerHTML = "Brighton";
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsRezultat").innerHTML = "0 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsGost").innerHTML = "Leicester"
-        document.querySelector("#tabelaResults tr:nth-child(4) .resultsSlikaGost img").setAttribute("src","img/leicester.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsSlikaDomacin img").setAttribute("src","img/arsenal.png");
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsDomacin").innerHTML = "Arsenal";
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsRezultat").innerHTML = "2 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsGost").innerHTML = "Southampton"
-        document.querySelector("#tabelaResults tr:nth-child(5) .resultsSlikaGost img").setAttribute("src","img/southampton.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsSlikaDomacin img").setAttribute("src","img/bournemouth.png");
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsDomacin").innerHTML = "Bournemouth";
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsRezultat").innerHTML = "1 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsGost").innerHTML = "Wolves"
-        document.querySelector("#tabelaResults tr:nth-child(6) .resultsSlikaGost img").setAttribute("src","img/wolves.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsSlikaDomacin img").setAttribute("src","img/watford.png");
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsDomacin").innerHTML = "Watford";
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsRezultat").innerHTML = "0 - 3"
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsGost").innerHTML = "Burnley"
-        document.querySelector("#tabelaResults tr:nth-child(7) .resultsSlikaGost img").setAttribute("src","img/burnley.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsSlikaDomacin img").setAttribute("src","img/palace.png");
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsDomacin").innerHTML = "Crystal Palaca";
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsRezultat").innerHTML = "1 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsGost").innerHTML = "Liverpool"
-        document.querySelector("#tabelaResults tr:nth-child(8) .resultsSlikaGost img").setAttribute("src","img/liverpul.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsSlikaDomacin img").setAttribute("src","img/everton.png");
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsDomacin").innerHTML = "Everton";
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsRezultat").innerHTML = "0 - 2"
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsGost").innerHTML = "Norwich"
-        document.querySelector("#tabelaResults tr:nth-child(9) .resultsSlikaGost img").setAttribute("src","img/norwich.png");
-
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsSlikaDomacin img").setAttribute("src","img/westham.png");
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsDomacin").innerHTML = "West Ham";
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsRezultat").innerHTML = "2 - 3"
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsGost").innerHTML = "Tottenham"
-        document.querySelector("#tabelaResults tr:nth-child(10) .resultsSlikaGost img").setAttribute("src","img/tottenham.png");
-    });
-     
-    var weekFixturesId=[17,18,19];
-    for (let i = 0; i<weekId.length; i++){
-        if(i==0) document.getElementById("fixturesWeeks").innerHTML+= "<li id='week"+weekFixturesId[i]+"' class='aktivan'>Week "+weekFixturesId[i]+"</li>";
-        else document.getElementById("fixturesWeeks").innerHTML+= "<li id='week"+weekFixturesId[i]+"'>Week "+weekFixturesId[i]+"</li>";
-    }
-
-    var fixtures = $("#tableFixtures tr:even");
-    fixtures.addClass("sivRed");
     
+
     $("#fixtures ul li").click(function(){
         $("#fixtures ul li").removeClass("aktivan");
         $(this).addClass("aktivan");
     });
+}
 
-    var fixturespocetno = document.getElementById("tableFixtures").innerHTML;
-    document.getElementById("week17").addEventListener("click",function(){
-        document.getElementById("tableFixtures").innerHTML = fixturespocetno;
-    });
-    document.getElementById("week18").addEventListener("click",function(){
-        document.querySelector("#tableFixtures tr:first-child .fixturesSlikaDomacin img").setAttribute("src","img/everton.png");
-        document.querySelector("#tableFixtures tr:first-child .fixturesDomacin").innerHTML = "Everton";
-        document.querySelector("#tableFixtures tr:first-child .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:first-child .fixturesGost").innerHTML = "Arsenal"
-        document.querySelector("#tableFixtures tr:first-child .fixturesSlikaGost img").setAttribute("src","img/arsenal.png");
+//Funkcija za kreiranje reda za tabele Results i Fixtures
+function kreiranjeReda(type,domacin,gost,text){
+    var red = document.createElement("tr");
 
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesSlikaDomacin img").setAttribute("src","img/bournemouth.png");
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesDomacin").innerHTML = "Bournemouth";
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesGost").innerHTML = "Burnley"
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesSlikaGost img").setAttribute("src","img/burnley.png");
+    var slikaDomacinTd = document.createElement("td");
+    slikaDomacinTd.setAttribute("class", type+"SlikaDomacin");
+    var slikaDomacin = document.createElement("img");
+    slikaDomacin.setAttribute("src","img/"+domacin[1]+".png");
+    slikaDomacin.setAttribute("alt",domacin[1]);
+    slikaDomacinTd.appendChild(slikaDomacin);
+    red.appendChild(slikaDomacinTd);
 
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesSlikaDomacin img").setAttribute("src","img/astonvilla.png");
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesDomacin").innerHTML = "Aston Villa";
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesGost").innerHTML = "Southampton"
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesSlikaGost img").setAttribute("src","img/southampton.png");
+    var domacinTd = document.createElement("td");
+    domacinTd.setAttribute("class", type+"Domacin");
+    domacinTd.innerHTML = domacin[0];
+    red.appendChild(domacinTd);
 
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesSlikaDomacin img").setAttribute("src","img/brighton.png");
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesDomacin").innerHTML = "Brighton";
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesGost").innerHTML = "Sheffield"
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesSlikaGost img").setAttribute("src","img/sheffield.png");
+    var textTd = document.createElement("td");
+    textTd.innerHTML = text;
+    red.appendChild(textTd);
 
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesSlikaDomacin img").setAttribute("src","img/newcastle.png");
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesDomacin").innerHTML = "Newcastle";
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesGost").innerHTML = "Crystal Palace"
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesSlikaGost img").setAttribute("src","img/palace.png");
+    var gostTd = document.createElement("td");
+    gostTd.setAttribute("class", type+"Gost");
+    gostTd.innerHTML = gost[0];
+    red.appendChild(gostTd);
 
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesSlikaDomacin img").setAttribute("src","img/norwich.png");
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesDomacin").innerHTML = "Norwich";
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesGost").innerHTML = "Wolves"
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesSlikaGost img").setAttribute("src","img/wolves.png");
+    var slikaGostTd = document.createElement("td");
+    slikaGostTd.setAttribute("class", type+"SlikaGost");
+    var slikaGost = document.createElement("img");
+    slikaGost.setAttribute("src","img/"+gost[1]+".png");
+    slikaGost.setAttribute("alt",gost[1]);
+    slikaGostTd.appendChild(slikaGost);
+    red.appendChild(slikaGostTd);
 
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesSlikaDomacin img").setAttribute("src","img/mancity.png");
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesDomacin").innerHTML = "Manchester City";
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesDate").innerHTML = "21.12"
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesGost").innerHTML = "Leicester"
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesSlikaGost img").setAttribute("src","img/leicester.png");
+    document.getElementById(type+"Table").appendChild(red);
+   
+}
 
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesSlikaDomacin img").setAttribute("src","img/manunited.png");
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesDomacin").innerHTML = "Manchester United";
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesDate").innerHTML = "22.12"
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesGost").innerHTML = "Watford"
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesSlikaGost img").setAttribute("src","img/watford.png");
+//Timovi za tabele Results i Fixures
+var arsenal = ["Arsenal","arsenal"];
+var brighton = ["Brighton","brighton"];
+var sheffield = ["Sheffield United", "sheffield"];
+var newcastle = ["Newastle", "newcastle"];
+var liverpool = ["Liverpool", "liverpul"];
+var everton = ["Everton", "everton"];
+var wolves = ["Wolves", "wolves"];
+var westham = ["West Ham", "westham"];
+var manunited = ["Manchester United", "manunited"];
+var tottenham = ["Tottenham", "tottenham"];
+var chelsea = ["Chelsea", "chelsea"];
+var astonvilla = ["Aston Villa", "astonvilla"];
+var southampton = ["Southamton", "southampton"];
+var norwich = ["Norwich", "norwich"];
+var leicester = ["Leicester", "leicester"];
+var watford = ["Watford", "watford"];
+var burnley = ["Burnley", "burnley"];
+var mancity = ["Manchester City", "mancity"];
+var palace = ["Crystal Palace", "palace"];
+var bournemouth = ["Bournemouth", "bournemouth"];
 
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesSlikaDomacin img").setAttribute("src","img/tottenham.png");
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesDomacin").innerHTML = "Tottenham";
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesDate").innerHTML = "22.12"
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesGost").innerHTML = "Chelsea"
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesSlikaGost img").setAttribute("src","img/chelsea.png");
 
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesSlikaDomacin img").setAttribute("src","img/burnley.png");
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesDomacin").innerHTML = "Burnley";
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesDate").innerHTML = "22.12"
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesGost").innerHTML = "Sheffield United"
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesSlikaGost img").setAttribute("src","img/sheffield.png");
-    });
-    document.getElementById("week19").addEventListener("click",function(){
-        document.querySelector("#tableFixtures tr:first-child .fixturesSlikaDomacin img").setAttribute("src","img/tottenham.png");
-        document.querySelector("#tableFixtures tr:first-child .fixturesDomacin").innerHTML = "Tottenham";
-        document.querySelector("#tableFixtures tr:first-child .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:first-child .fixturesGost").innerHTML = "Brighton"
-        document.querySelector("#tableFixtures tr:first-child .fixturesSlikaGost img").setAttribute("src","img/brighton.png");
+//Funkcije za ispisivanje tabele Results po nedeljama
+function resultsWeek15(){
+    document.getElementById("resultsTable").innerHTML = "";
+    
+    kreiranjeReda("results",arsenal,brighton,"1 : 2");
+    kreiranjeReda("results",sheffield,newcastle,"0 : 2");
+    kreiranjeReda("results",liverpool,everton,"5 : 2");
+    kreiranjeReda("results",wolves,westham,"2 : 0");
+    kreiranjeReda("results",manunited,tottenham,"2 : 1");
+    kreiranjeReda("results",chelsea,astonvilla,"2 : 1");
+    kreiranjeReda("results",southampton,norwich,"2 : 1");
+    kreiranjeReda("results",leicester,watford,"2 : 0");
+    kreiranjeReda("results",burnley,mancity,"1 : 4");
+    kreiranjeReda("results",palace,bournemouth,"1 : 0");
 
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesSlikaDomacin img").setAttribute("src","img/everton.png");
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesDomacin").innerHTML = "Everton";
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesGost").innerHTML = "Burnley"
-        document.querySelector("#tableFixtures tr:nth-child(2) .fixturesSlikaGost img").setAttribute("src","img/burnley.png");
+    zebra("#resultsTable tr:even");
+}
 
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesSlikaDomacin img").setAttribute("src","img/watford.png");
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesDomacin").innerHTML = "Watford";
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesGost").innerHTML = "Sheffield United"
-        document.querySelector("#tableFixtures tr:nth-child(3) .fixturesSlikaGost img").setAttribute("src","img/sheffield.png");
+function resultsWeek14(){
+    document.getElementById("resultsTable").innerHTML = "";
+    
+    kreiranjeReda("results",manunited,astonvilla,"2 : 2");
+    kreiranjeReda("results",leicester,everton,"2 : 1");
+    kreiranjeReda("results",norwich,arsenal,"2 : 2");
+    kreiranjeReda("results",wolves,sheffield,"1 : 1");
+    kreiranjeReda("results",southampton,watford,"2 : 1");
+    kreiranjeReda("results",tottenham,bournemouth,"3 : 2");
+    kreiranjeReda("results",liverpool,brighton,"2 : 1");
+    kreiranjeReda("results",chelsea,westham,"0 : 1");
+    kreiranjeReda("results",burnley,palace,"0 : 2");
+    kreiranjeReda("results",newcastle,mancity,"2 : 2");
 
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesSlikaDomacin img").setAttribute("src","img/bournemouth.png");
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesDomacin").innerHTML = "Bournemouth";
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesGost").innerHTML = "Arsenal"
-        document.querySelector("#tableFixtures tr:nth-child(4) .fixturesSlikaGost img").setAttribute("src","img/arsenal.png");
+    zebra("#resultsTable tr:even");
+}
 
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesSlikaDomacin img").setAttribute("src","img/palace.png");
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesDomacin").innerHTML = "Crystal Palace";
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesGost").innerHTML = "West Ham"
-        document.querySelector("#tableFixtures tr:nth-child(5) .fixturesSlikaGost img").setAttribute("src","img/westham.png");
+function resultsWeek13(){
+    document.getElementById("resultsTable").innerHTML = "";
+    
+    kreiranjeReda("results",astonvilla,newcastle,"2 : 0");
+    kreiranjeReda("results",manunited,sheffield,"3 : 3");
+    kreiranjeReda("results",mancity,chelsea,"2 : 1");
+    kreiranjeReda("results",brighton,leicester,"0 : 2");
+    kreiranjeReda("results",arsenal,southampton,"2 : 2");
+    kreiranjeReda("results",bournemouth,wolves,"1 : 2");
+    kreiranjeReda("results",watford,burnley,"3 : 0");
+    kreiranjeReda("results",palace,liverpool,"2 : 1");
+    kreiranjeReda("results",everton,norwich,"0 : 2");
+    kreiranjeReda("results",westham,tottenham,"2 : 3");
 
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesSlikaDomacin img").setAttribute("src","img/chelsea.png");
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesDomacin").innerHTML = "Chelsea";
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesGost").innerHTML = "Southampton"
-        document.querySelector("#tableFixtures tr:nth-child(6) .fixturesSlikaGost img").setAttribute("src","img/southampton.png");
+    zebra("#resultsTable tr:even");
+}
 
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesSlikaDomacin img").setAttribute("src","img/astonvilla.png");
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesDomacin").innerHTML = "Aston Villa";
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesGost").innerHTML = "Norwich"
-        document.querySelector("#tableFixtures tr:nth-child(7) .fixturesSlikaGost img").setAttribute("src","img/norwich.png");
+//Funkcije za ispisivanje tabele Fixtures po nedeljama
+function fixturesWeek17(){
+    document.getElementById("fixturesTable").innerHTML = "";
 
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesSlikaDomacin img").setAttribute("src","img/manunited.png");
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesDomacin").innerHTML = "Manchester United";
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesGost").innerHTML = "Newcastle"
-        document.querySelector("#tableFixtures tr:nth-child(8) .fixturesSlikaGost img").setAttribute("src","img/newcastle.png");
+    kreiranjeReda("fixtures",liverpool,watford,"14.12");
+    kreiranjeReda("fixtures",burnley,newcastle,"14.12");
+    kreiranjeReda("fixtures",chelsea,bournemouth,"14.12");
+    kreiranjeReda("fixtures",sheffield,astonvilla,"14.12");
+    kreiranjeReda("fixtures",leicester,norwich,"14.12");
+    kreiranjeReda("fixtures",southampton,westham,"14.12");
+    kreiranjeReda("fixtures",manunited,everton,"15.12");
+    kreiranjeReda("fixtures",wolves,tottenham,"15.12");
+    kreiranjeReda("fixtures",arsenal,mancity,"15.12");
+    kreiranjeReda("fixtures",palace,brighton,"15.12");
+   
 
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesSlikaDomacin img").setAttribute("src","img/leicester.png");
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesDomacin").innerHTML = "Leicester";
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesDate").innerHTML = "26.12"
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesGost").innerHTML = "Liverpool"
-        document.querySelector("#tableFixtures tr:nth-child(9) .fixturesSlikaGost img").setAttribute("src","img/liverpul.png");
+    zebra("#fixturesTable tr:even");
+}
 
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesSlikaDomacin img").setAttribute("src","img/wolves.png");
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesDomacin").innerHTML = "Wolves";
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesDate").innerHTML = "27.12"
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesGost").innerHTML = "Manchester City"
-        document.querySelector("#tableFixtures tr:nth-child(10) .fixturesSlikaGost img").setAttribute("src","img/mancity.png");
-    });
+function fixturesWeek18(){
+    document.getElementById("fixturesTable").innerHTML = "";
 
-    var x = "topPerformers";
-    for(let i = 1; i<=2; i++){
-        document.getElementById("performers").innerHTML+="<div id='"+x+i+"'class='"+x+"'><p id='reveal"+i+"'></p></div>"
+    kreiranjeReda("fixtures",everton,arsenal,"21.12");
+    kreiranjeReda("fixtures",bournemouth,burnley,"21.12");
+    kreiranjeReda("fixtures",astonvilla,southampton,"21.12");
+    kreiranjeReda("fixtures",brighton,sheffield,"21.12");
+    kreiranjeReda("fixtures",newcastle,palace,"21.12");
+    kreiranjeReda("fixtures",norwich,wolves,"21.12");
+    kreiranjeReda("fixtures",mancity,leicester,"21.12");
+    kreiranjeReda("fixtures",manunited,watford,"22.12");
+    kreiranjeReda("fixtures",tottenham,chelsea,"22.12");
+    kreiranjeReda("fixtures",burnley,sheffield,"22.12");
+
+    zebra("#fixturesTable tr:even");
+}
+
+function fixturesWeek19(){
+    document.getElementById("fixturesTable").innerHTML = "";
+
+    kreiranjeReda("fixtures",tottenham,brighton,"26.12");
+    kreiranjeReda("fixtures",everton,burnley,"26.12");
+    kreiranjeReda("fixtures",watford,sheffield,"26.12");
+    kreiranjeReda("fixtures",bournemouth,arsenal,"26.12");
+    kreiranjeReda("fixtures",palace,westham,"26.12");
+    kreiranjeReda("fixtures",chelsea,southampton,"26.12");
+    kreiranjeReda("fixtures",astonvilla,norwich,"26.12");
+    kreiranjeReda("fixtures",manunited,newcastle,"26.12");
+    kreiranjeReda("fixtures",leicester,liverpool,"26.12");
+    kreiranjeReda("fixtures",wolves,mancity,"27.12");
+
+    zebra("#fixturesTable tr:even");
+}
+
+//Kreiranje Top Performers sekcije
+var performers = ["player", "manager"];
+function kreiranjeTopPerformers(){
+    for(i=0; i<performers.length; i++){
+        var performer = document.createElement("div");
+        performer.setAttribute("id","topPerformers"+(i+1));
+        performer.setAttribute("class","topPerformers");
+        performer.style.background = "url(img/pozadina"+i+".jpg";
+
+        var reveal = document.createElement("p");
+        reveal.setAttribute("id", "reveal"+(i+1));
+        reveal.innerHTML = "Reveal " + performers[i] + " of the week"
+        
+        performer.appendChild(reveal);
+        document.getElementById("performers").appendChild(performer);
     }
-    document.getElementById("reveal1").innerHTML = "Reveal player of the week";
-    document.getElementById("reveal2").innerHTML = "Reveal manager of the week";
-    for(let i = 0; i<=1; i++){
-        document.getElementsByClassName("topPerformers")[i].style.background = "url(img/pozadina"+i+".jpg";
-    }
+
     $("#topPerformers1").click(function(){
         if($("#reveal1").html()=="Reveal player of the week"){
             $(this).fadeOut(function(){
@@ -365,55 +444,50 @@ $(document).ready(function(){
             });
         }
     });
+}
+
+
+//Validacija forme
+var spanFullName = document.getElementById("fullNameSpan");
+var spanEmail = document.getElementById("emailSpan");
+var spanSubject = document.getElementById("subjectSpan");
+var spanMessage = document.getElementById("messageSpan");
+var spanPoslato = document.getElementById("poslato");
+
+regFullName = /^[A-Z][a-z]{1,11}(\s[A-Z][a-z]{1,11})+$/
+regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+function validacijaForme(){
+    var fullName = document.getElementById("fullName").value;
+    var email = document.getElementById("email").value;
+    var subject = document.getElementById("subject").value;
+    var message = document.getElementById("message").value;
     
-    var spanFullName = document.getElementById("fullNameSpan");
-    var spanEmail = document.getElementById("emailSpan");
-    var spanSubject = document.getElementById("subjectSpan");
-    var spanMessage = document.getElementById("messageSpan");
-    var spanPoslato = document.getElementById("poslato");
+    spanFullName.innerHTML = "";
+    spanEmail.innerHTML = "";
+    spanSubject.innerHTML = "";
+    spanMessage.innerHTML = "";
 
-    regFullName = /^[A-Z][a-z]{1,11}(\s[A-Z][a-z]{1,11})+$/
-    regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    var validno = true;
+    spanPoslato.innerHTML="";
 
-    document.getElementById("button").addEventListener("click",function(){
-        var fullName = document.getElementById("fullName").value;
-        var email = document.getElementById("email").value;
-        var subject = document.getElementById("subject").value;
-        var message = document.getElementById("message").value;
-        
-        spanFullName.innerHTML = "";
-        spanEmail.innerHTML = "";
-        spanSubject.innerHTML = "";
-        spanMessage.innerHTML = "";
+    if(fullName=="") { spanFullName.innerHTML = "Required"; validno = false;}
+    else if(regFullName.test(fullName)==false){spanFullName.innerHTML = "Enter your full name correctly"; validno = false;}
 
-        var validno = true;
-        spanPoslato.innerHTML="";
+    if(email=="") { spanEmail.innerHTML = "Required"; validno = false;}
+    else if(regEmail.test(email)==false){spanEmail.innerHTML = "Enter your email correctly"; validno = false;}
 
-        if(fullName=="") { spanFullName.innerHTML = "Required"; validno = false;}
-        else if(regFullName.test(fullName)==false){spanFullName.innerHTML = "Enter your full name correctly"; validno = false;}
+    if(subject=="") { spanSubject.innerHTML = "Required"; validno = false;}
+    else if(subject.length<4){spanSubject.innerHTML = "At least 4 characters"; validno = false;}
 
-        if(email=="") { spanEmail.innerHTML = "Required"; validno = false;}
-        else if(regEmail.test(email)==false){spanEmail.innerHTML = "Enter your email correctly"; validno = false;}
+    if(message=="") { spanMessage.innerHTML = "Required"; validno = false;}
+    else if(message.length<10){spanMessage.innerHTML = "At least 10 characters"; validno = false;}
 
-        if(subject=="") { spanSubject.innerHTML = "Required"; validno = false;}
-        else if(subject.length<4){spanSubject.innerHTML = "At least 4 characters"; validno = false;}
-
-        if(message=="") { spanMessage.innerHTML = "Required"; validno = false;}
-        else if(message.length<10){spanMessage.innerHTML = "At least 10 characters"; validno = false;}
-
-        if(validno){
-            spanPoslato.innerHTML="Your message has been sent.";
-            document.getElementById("fullName").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("subject").value = "";
-            document.getElementById("message").value = "";
-        }
-
-    });
-    $("#menuBars").click(function(){
-        $("#menu").toggle();
-    });
-    $("#menu ul li a").click(function(){
-        $("#menu").toggle();
-    });
-});
+    if(validno){
+        spanPoslato.innerHTML="Your message has been sent.";
+        document.getElementById("fullName").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("subject").value = "";
+        document.getElementById("message").value = "";
+    }
+}
